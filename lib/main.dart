@@ -62,6 +62,8 @@ class _SignUpFormState extends State<SignUpForm> {
 
   double _formProgress = 0;
 
+  final _formKey = GlobalKey<FormState>();
+
   void _showWelcomeScreen() {
     Navigator.of(context).pushNamed('/welcome');
   }
@@ -88,6 +90,7 @@ class _SignUpFormState extends State<SignUpForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formKey,
       onChanged: _updateFormProgress,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -99,6 +102,12 @@ class _SignUpFormState extends State<SignUpForm> {
             child: TextFormField(
               controller: _firstNameTextController,
               decoration: const InputDecoration(hintText: 'First name'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text';
+                }
+                return null;
+              },
             ),
           ),
           Padding(
@@ -106,6 +115,12 @@ class _SignUpFormState extends State<SignUpForm> {
             child: TextFormField(
               controller: _lastNameTextController,
               decoration: const InputDecoration(hintText: 'Last name'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text';
+                }
+                return null;
+              },
             ),
           ),
           Padding(
@@ -113,6 +128,12 @@ class _SignUpFormState extends State<SignUpForm> {
             child: TextFormField(
               controller: _usernameTextController,
               decoration: const InputDecoration(hintText: 'Username'),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter some text';
+                }
+                return null;
+              },
             ),
           ),
           TextButton(
@@ -130,7 +151,18 @@ class _SignUpFormState extends State<SignUpForm> {
                     : Colors.blue;
               }),
             ),
-            onPressed: _formProgress == 1 ? _showWelcomeScreen : null,
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                _showWelcomeScreen();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Processing Data'),
+                    duration: Duration(milliseconds: 500),
+                  ),
+                );
+              }
+            },
+            // onPressed: _formProgress == 1 ? _showWelcomeScreen : null,
             child: const Text('Sign up'),
           ),
         ],
