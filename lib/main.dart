@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:regexpattern/regexpattern.dart';
 
 void main() => runApp(const SignUpApp());
 
@@ -87,6 +88,8 @@ class _SignUpFormState extends State<SignUpForm> {
     });
   }
 
+  RegExp nameRegExp = RegExp(r"^[A-Z]'?[- a-zA-Z]+$");
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -104,7 +107,9 @@ class _SignUpFormState extends State<SignUpForm> {
               decoration: const InputDecoration(hintText: 'First name'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                  return 'Please enter some text.';
+                } else if (!nameRegExp.hasMatch(value)) {
+                  return 'Please provide a proper name.';
                 }
                 return null;
               },
@@ -117,7 +122,9 @@ class _SignUpFormState extends State<SignUpForm> {
               decoration: const InputDecoration(hintText: 'Last name'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                  return 'Please enter some text.';
+                } else if (!nameRegExp.hasMatch(value)) {
+                  return 'Please provide a proper name.';
                 }
                 return null;
               },
@@ -130,7 +137,9 @@ class _SignUpFormState extends State<SignUpForm> {
               decoration: const InputDecoration(hintText: 'Username'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter some text';
+                  return 'Please enter some text.';
+                } else if (!value.isUsername()) {
+                  return 'Please provide a proper username.';
                 }
                 return null;
               },
